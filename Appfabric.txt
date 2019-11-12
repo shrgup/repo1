@@ -1,0 +1,30 @@
+﻿; Common values for all app fabric project discovery instances
+
+HostedServiceName=<Hosted service="" name="">
+OldDeploymentUrl=<The URL for the deployment, e.g. https://spsprodwcus0.vssps.visualstudio.com>
+SslCertificateThumbprint=<thumbprint of='' the='' SSL='' certificate='' for='' the='' hosted='' service=''>
+
+HttpPort=80
+HttpsPort=443
+UseSsl=True
+
+; The database pool in which the account-level partitions will be located for new account creation (ex. ConfigurationPool, DefaultPartitionPool, etc.)
+AccountDatabasePool=DefaultPartitionPool
+
+; The initial number of tenants allowed in newly-created partition databases.
+PartitionDbInitialCapacity=10000
+
+; If the number of available tenants across all partition databases in the pool falls at or below this value, a new database will be added to the pool.
+PartitionDbCreateThreshold=0
+
+; When database creation is triggered (due to lack of capacity), this value controls the number of new databases which are added to the pool.
+PartitionDbGrowBy=1
+
+; The maximum number of databases which can be added to the partition pool.
+PartitionDbMaxDatabaseLimit=1000
+
+; The custom service-specific servicing operations (semicolon separated) that should be executed to prepare newly-created partition databases. Do not include CreatePartitionDbSchema/CreatePartitionDbComplete. Example: CreateServiceHooksSchema
+PartitionDbServicingOperations=CreateSearchPartitionSchema
+
+InheritFrom=Search.defaults;AAD.defaults;FedAuth.defaults;Azure.defaults;Diagnostics.defaults;Rdp.defaults;ServiceBus.defaults;Smtp.defaults;Sql.defaults;Vssf.defaults
+

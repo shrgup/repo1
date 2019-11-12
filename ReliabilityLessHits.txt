@@ -1,0 +1,97 @@
+Reliability
+-----------
+
+Publish Button Gets Disabled
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is a bug that has been hit but lots of users and is causing a bit of frustration and increased support cost.
+
+[quote]
+Mark, a reviewer, has been working on a code review and as he was adding a comment, he noticed that the publish comment is disabled.
+After being confused about the reason, he decided to restart CodeFlow and after which he was able to publish comments agai.
+Unfortonately, the issue kept reproducing for him which caused some frustration causing him to contact cfdevs.
+CodeFlow developers suggested using Ctrl+Enter which will publish successfully even if publish button is disabled until they resolve the issue.
+
+.Related Work Items
+[NOTE]
+8652, 9265: The publish button is occasionally disabled when it shouldn't be.
+
+
+Dashboard Review and Project Updates are not reliable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The dashboard doesn't use the proper model of authenticating at the front door, and then using a service account to get the job done with the core code review service.
+This results in cases where authorization logic was stripped form the code to get scenarios working.
+In addition, there are still scenarios that fail due to authorization logic that can't be removed.
+
+[quote]
+Tim, a code review author, sometimes prefer to use the dashboard to do quick operations like ping, complete or recall code reviews without having to open the CodeFlow GUI client.
+He has noticed that in some cases these operations do not succeed.
+
+[quote]
+Jai, a CodeFlow project owner, attempted to retire a CodeFlow project via the dashboard and got successful result.
+However, he noticed that as he refreshed the page, the data was not really updated.
+
+.Related Work Items
+[NOTE]
+7912: Can't ping/complete review/etc. from the codeflow dashboard
+
+Data Loss
+~~~~~~~~~
+
+.Losing Description on Publish Errors
+[quote]
+Grant, a code review author, is in the process of publishing a code review.
+He has selected the change list, the reviewers, the work items, and wrote a length and descriptive comment.
+He then clicked Publish which failed due to some network flakiness of backend service issue, causing this to report an error and quit.
+Grant was frustrated that he lost the time he spent on writing the description and sent an email to cfdevs requesting that CodeFlow be resillient to such failures.
+Even if the error persists after several retries, CodeFlow should provide a way for developers to not lose their data.
+
+.Losing comments on network errors
+[quote]
+Francisco, a code reviewer, was working on adding a lengthy comment and as he clicked published, this reported an error due to inability to connect to service and shutdown.
+He was frustrated due to loss of his comment(s) and emailed cfdevs requested higher reliability.
+
+.File marks are lost
+[quote]
+Greg, a code reviewer, likes tracking what files he has completed reviewing using the mark file feature.
+As he was half the way through the review, he switch to a previous iteration to check some initial version of a function.
+He was surprised to find out that he has completely lost his file marking.
+He sent an email to cfdevs requesting that marking be persisted when switching iterations as well as cross CodeFlow runs.
+
+.Lost unpulished comments
+[quote]
+Peter, a code reviewer, likes adding his comments and keeping them unpublished when he is not sure about his comments yet.
+As he forms a stronger opinion based on the code reviewed, he publishes the comments within the file or in other files.
+He has lost comments in multiple scenarios due to a CodeFlow crash or due to him existing CodeFlow without publishing all the comments.
+He emailed cfdevs to explain his frustration, but cfdevs told him that this is not a recommended scenario and that he should publish comments right away and re-call them if needed.
+However, they have acknowledged, that this shouldn't lose comments on crash and should prompt the user with a warning if they have unpublished comments.
+
+.Won't Fix hides even unpublished comments
+[quote]
+Amanda, a code review author, decided not to fix one of the comments she got from one of her reviewers.
+She wrote the reply and then selected "won't fix", which resulted in the comment collapsing.
+Due to it being collapsed, Amanada assume that the reply was publish, but she later figured out that only the status change was published.
+She expected that the comment shouldn't be collapsed until the new added reply is published.
+
+.Related Work Items
+[NOTE]
+===============================
+????: Loss of description when publish fails.
+
+8291: Loss of connection to the service causes reviewers to lose data and comments
+
+6743,3657, 4612, 7967, 6449: Persistence of local review state (marked files, hidden comments, etc)
+
+3811: UX: Prompt the user for confirmation when they're about to lose unsaved data.
+
+6459: Cancelled unpublished comment reappears as the user scroll
+
+6638: File "Marks" lost when switching between review iterations
+
+7058: CF discards unpublished comments when selecting a different file
+
+4743: comment collapses when changing to "Won't Fix" even if there is a comment to be published
+
+8001: Data loss: All the description information/ title will miss when close the code flow during the publishing
+===============================

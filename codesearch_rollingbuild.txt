@@ -1,0 +1,83 @@
+; Deployment file for a dev fabric Search deployment
+; NOTE: Make changes to the .deployment version of this file, not the .template.  The .template is just used
+; to produce the initial version of the .deployment which you can later modify to your needs.
+
+; Subscription ID and Management thumbprint
+AzureSubscriptionId=4793fd98-cab6-43ee-b0b6-bebbfbb7d893
+AzureManagementApiCertThumbprint=vault:///AzureManagementApiCertThumbprint
+SSLCertificateThumbprint=vault://$$HostedServiceName$$/SslCertificateThumbprint
+
+SqlAdministrator=CurrentUser
+RedisConnectionString=
+AzureRegion=EastUS2
+DeploymentRing=int0
+
+; Change this according to your setting
+HostedServiceName=codesearchrolling
+OldDeploymentUrl=https://app.codesearchrolling.tfsallin.net
+
+SqlInstance=searchint.database.windows.net
+
+; Should be same as Configuration Login Credentials
+DataTierLoginName=ProjectDiscoveryDT
+
+; Database Encryption Self-Signed Certificate (Currently same as Azure management cert in Search.Test.defaults) 
+PrimaryEncryptionCertificateThumbprint=vault:///AzureManagementApiCertThumbprint
+SecondaryEncryptionCertificateThumbprint=vault:///AzureManagementApiCertThumbprint
+
+; Change elastic search cluster endpoint in indexing code as below
+ATSearchPlatformConnectionStringOld=http://10.0.0.51:9200;http://10.0.0.52:9200
+JobAgentSearchPlatformConnectionString=http://10.0.0.51:9200;http://10.0.0.52:9200
+ATSearchPlatformConnectionString=http://10.0.0.51:9200;http://10.0.0.52:9200
+
+GitBlobStorageConnectionString=vault:///GitBlobStorageConnectionString
+BlobStorageConnectionString=vault:///BlobStorageConnectionString
+DiagnosticsConnectionString=vault:///DiagnosticsConnectionString
+CommerceEventsStoreConnectionString=vault:///CommerceEventsStoreConnectionString
+FileServiceStorageAccount=vault:///FileServiceStorageAccount*
+
+VNetName=searchint
+SubNetName=searchint
+
+ATInstanceCount=1
+JobAgentInstanceCount=1
+ATVMSize=Medium
+JobAgentVMSize=Medium
+SecuritySetsRebuildIntervalInSec=60
+
+MaxJobsPerNode=8
+MaxJobsTotal=50
+
+RefreshRate=1s
+
+; MDS related settings
+MdsEncryptionCertificateThumbprint=vault://cdpsearchrolling/MdsEncryptionCertificateThumbprint
+MdsTableSuffix=SRolling
+MdsCentralEnabled=true
+MdsEndpoint=https://test1.diagnostics.monitoring.core.windows.net/
+MdsMappingMonikers=SRolling
+MdsMonitoringAgentEnabled=true
+MdsAccount=VsoSearchRollingMdsAccount
+MdsBaseMoniker=SearchRollingacct1
+MdsNamespace=vssfSRolling
+
+MdmRegion=EUS
+MdmScaleunit=INT
+MdmEnabled=true
+MdmEndpoint=https://global.metrics.nsatc.net/
+MdmService=Search
+MdmAccountName=TestVSO-ALMSearch
+MdmNamespace=Search
+MdmDeploy=true
+MdmApiEndpoint=https://prod2.metrics.nsatc.net/
+
+MdsServiceBusNamespace=codesearchtest1mdm
+MdsServiceBusSharedAccessKeyName=vault://cdpsearchrolling/MdsServiceBusSharedAccessKey?property=username
+MdsServiceBusSharedAccessKey=vault://cdpsearchrolling/MdsServiceBusSharedAccessKey
+MdsDiagnosticEvents=^.*$
+
+; Enable Kusto
+MdsLogAnalyticsId=vsodev
+MdsLogAnalyticsDatabase=VSODev
+
+InheritFrom=Search.AppFabric.VssInt.Defaults
